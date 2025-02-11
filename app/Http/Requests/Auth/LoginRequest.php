@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests\Auth;
-
+use RyanChandler\LaravelCloudflareTurnstile\Rules\Turnstile;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -26,10 +26,17 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+       $rules =  [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
+
+        if(config('app.env') == 'production') {
+            
+            $rules['cf-turnstile-response'] = ['required', app(Turnstile::class)];
+        }
+      
+        return $rules;
     }
 
     /**

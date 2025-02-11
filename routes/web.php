@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\PostController as ApiPostController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+
+Route::resource('posts', PostController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
