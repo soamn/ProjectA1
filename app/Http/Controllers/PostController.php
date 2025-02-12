@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
@@ -13,7 +14,26 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        if (request()->ajax()) {
+
+            return DataTables::of($posts)
+                ->addIndexColumn()
+                ->addColumn('actions', function ($row) {
+                    return '
+                       <a href="' . route('posts.edit', $row->id) . '" style="color:red; font-weight:600; text-decoration:none;">Edit</a>
+<form action="' . route('posts.destroy', $row->id) . '" method="POST" style="display:inline;">
+    ' . csrf_field() . '
+    ' . method_field('DELETE') . '
+    <button type="submit" style="color:blue; font-weight:600; border:none; background-color:transparent; text-decoration:none;">Delete</button>
+</form>
+                    ';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
         return view('posts.index', compact('posts'));
     }
 

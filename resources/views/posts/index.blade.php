@@ -20,10 +20,10 @@
                     <div class="p-4">
                         <h2 class="text-xl font-semibold text-gray-800">{{ $post->title }}</h2>
                         <p class="text-gray-600 mt-2">{{ Str::limit($post->description, 100) }}</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <a href="{{ route('posts.edit', $post) }}" class="text-blue-600 hover:text-blue-800">
+                        <div class="mt-4  flex justify-between items-center ">
+                        <a href="{{ route('posts.edit', $post) }}" class="text-blue-600 hover:text-blue-800">
                                 <x-secondary-button>
-
+    
                                     Edit
                                 </x-secondary-button>
                             </a>
